@@ -2,6 +2,7 @@
 
 import Container from '@/components/Container';
 import Navbar from '@/components/Navbar';
+import WeatherIcon from '@/components/WeatherIcon';
 import { convertCelvinToCelsius } from '@/utils/convertCelvinToCelsius';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -142,6 +143,7 @@ export default function Home() {
                     <p className="whitespace-nowrap">
                       {format(parseISO(d.dt_txt), 'h:mm a')}
                     </p>
+                    <WeatherIcon iconName={d.weather[0].icon}/>
                     <p>{convertCelvinToCelsius(d?.main.temp ?? 0)}˚</p>
                   </div>
                 ))}
