@@ -143,15 +143,26 @@ export default function Home() {
                     <p className="whitespace-nowrap">
                       {format(parseISO(d.dt_txt), 'h:mm a')}
                     </p>
-                    <WeatherIcon iconName={d.weather[0].icon}/>
+                    <WeatherIcon iconName={d.weather[0].icon} />
                     <p>{convertCelvinToCelsius(d?.main.temp ?? 0)}˚</p>
                   </div>
                 ))}
               </div>
             </Container>
           </div>
+          <div className="flex gap-4">
+            <Container className="w-fit justify-center flex-col px-4 items-center">
+              <p className="capitalize text-center">
+                {firstData?.weather[0].description}
+              </p>
+              <WeatherIcon iconName={firstData?.weather[0].icon ?? ''} />
+            </Container>
+            <Container className="bg-yellow-300/80 px-6 gap-4 justify-between overflow-x-auto"></Container>
+          </div>
         </section>
-        <section></section>
+        <section className="flex w-full flex-col gap-4">
+          <p className="text-2xl">Forcast (7days)</p>
+        </section>
       </main>
     </div>
   );
