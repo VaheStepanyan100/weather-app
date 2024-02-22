@@ -2,10 +2,12 @@
 
 import Container from '@/components/Container';
 import Navbar from '@/components/Navbar';
+import WeatherDetails from '@/components/WeatherDetails';
 import WeatherIcon from '@/components/WeatherIcon';
 import { convertCelvinToCelsius } from '@/utils/convertCelvinToCelsius';
+import { metersToKilometers } from '@/utils/metersTokilometers';
 import axios from 'axios';
-import { format } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 import { parseISO } from 'date-fns/parseISO';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
@@ -157,7 +159,21 @@ export default function Home() {
               </p>
               <WeatherIcon iconName={firstData?.weather[0].icon ?? ''} />
             </Container>
-            <Container className="bg-yellow-300/80 px-6 gap-4 justify-between overflow-x-auto"></Container>
+            <Container className="bg-yellow-300/80 px-6 gap-4 justify-between overflow-x-auto">
+              <WeatherDetails
+                visability={metersToKilometers(firstData?.visibility ?? 10000)}
+                airPressure={`${firstData?.main.pressure} hPa`}
+                humidity={`${firstData?.main.humidity}%`}
+                sunrise={format(
+                  fromUnixTime(data?.city.sunrise ?? 1702949452),
+                  'H:mm'
+                )}
+                sunset={format(
+                  fromUnixTime(data?.city.sunset ?? 1702517657),
+                  'H:mm'
+                )}
+              />
+            </Container>
           </div>
         </section>
         <section className="flex w-full flex-col gap-4">
