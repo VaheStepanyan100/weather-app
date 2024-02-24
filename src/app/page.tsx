@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import WeatherDetails from '@/components/WeatherDetails';
 import WeatherIcon from '@/components/WeatherIcon';
 import { convertCelvinToCelsius } from '@/utils/convertCelvinToCelsius';
+import { convertWindSpeed } from '@/utils/convertWindSpeed';
 import { metersToKilometers } from '@/utils/metersTokilometers';
 import axios from 'axios';
 import { format, fromUnixTime } from 'date-fns';
@@ -172,6 +173,7 @@ export default function Home() {
                   fromUnixTime(data?.city.sunset ?? 1702517657),
                   'H:mm'
                 )}
+                windSpeed={convertWindSpeed(firstData?.wind.speed ?? 1.64)}
               />
             </Container>
           </div>
