@@ -109,7 +109,7 @@ export default function Home() {
     return data?.list.find((entry) => {
       const entryDate = new Date(entry.dt * 1000).toISOString().split('T')[0];
       const entryTime = new Date(entry.dt * 1000).getHours();
-      return entryDate === date && entryTime >= 6;
+      return entryDate === date ?? entryTime >= 6;
     });
   });
 
