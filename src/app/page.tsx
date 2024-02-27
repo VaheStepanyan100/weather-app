@@ -9,8 +9,7 @@ import { convertCelvinToCelsius } from '@/utils/convertCelvinToCelsius';
 import { convertWindSpeed } from '@/utils/convertWindSpeed';
 import { metersToKilometers } from '@/utils/metersTokilometers';
 import axios from 'axios';
-import { format, fromUnixTime } from 'date-fns';
-import { parseISO } from 'date-fns/parseISO';
+import { format, parseISO, fromUnixTime } from 'date-fns';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
 
@@ -109,7 +108,7 @@ export default function Home() {
     return data?.list.find((entry) => {
       const entryDate = new Date(entry.dt * 1000).toISOString().split('T')[0];
       const entryTime = new Date(entry.dt * 1000).getHours();
-      return entryDate === date ?? entryTime >= 6;
+      return entryDate === date && entryTime >= 6;
     });
   });
 
@@ -202,8 +201,8 @@ export default function Home() {
               key={i}
               description={d?.weather[0].description ?? ''}
               weatherIcon={d?.weather[0].icon ?? '01d'}
-              date={format(parseISO(d?.dt_txt ?? ''), 'dd.MM')}
-              day={format(parseISO(d?.dt_txt ?? ''), 'EEEE')}
+              date={ d ? format(parseISO(d.dt_txt), 'dd.MM'): ""}
+              day={ d ? format(parseISO(d.dt_txt), "dd.MM") : 'EEEE'}
               feels_like={d?.main.feels_like ?? 0}
               temp={d?.main.temp ?? 0}
               temp_max={d?.main.temp_max ?? 0}
