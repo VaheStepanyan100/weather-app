@@ -6,6 +6,8 @@ import { MdOutlineLocationOn } from 'react-icons/md';
 import SearchBox from './SearchBox';
 import { useState } from 'react';
 import axios from 'axios';
+import { useAtom } from 'jotai';
+import { placeAtom } from '@/app/atom';
 
 type Props = {};
 
@@ -17,6 +19,8 @@ export default function Navbar({}: Props) {
 
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const [place, setPlace] = useAtom(placeAtom);
 
   async function hangleInputChange(value: string) {
     setCity(value);
@@ -50,6 +54,7 @@ export default function Navbar({}: Props) {
       setError('Location not found');
     } else {
       setError('');
+      setPlace(city);
       setShowSuggestions(false);
     }
   }
