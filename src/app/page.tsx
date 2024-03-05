@@ -10,8 +10,11 @@ import { convertWindSpeed } from '@/utils/convertWindSpeed';
 import { metersToKilometers } from '@/utils/metersTokilometers';
 import axios from 'axios';
 import { format, parseISO, fromUnixTime } from 'date-fns';
+import { useAtom } from 'jotai';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
+import { placeAtom } from './atom';
+import { useEffect } from 'react';
 
 interface WeatherInfo {
   id: number;
@@ -81,16 +84,22 @@ interface WeatherData {
 }
 
 export default function Home() {
-  const { isLoading, error, data } = useQuery<WeatherData>(
+  const [place, setPlace] = useAtom(placeAtom);
+
+  const { isLoading, error, data, refetch } = useQuery<WeatherData>(
     'repoData',
     async () => {
       const { data } = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=pune&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}&cnt=56`
+        `https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}&cnt=56`
       );
 
       return data;
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [place, refetch]);
 
   const firstData = data?.list[0];
 
@@ -201,8 +210,8 @@ export default function Home() {
               key={i}
               description={d?.weather[0].description ?? ''}
               weatherIcon={d?.weather[0].icon ?? '01d'}
-              date={ d ? format(parseISO(d.dt_txt), 'dd.MM'): ""}
-              day={ d ? format(parseISO(d.dt_txt), "dd.MM") : 'EEEE'}
+              date={d ? format(parseISO(d.dt_txt), 'dd.MM') : ''}
+              day={d ? format(parseISO(d.dt_txt), 'dd.MM') : 'EEEE'}
               feels_like={d?.main.feels_like ?? 0}
               temp={d?.main.temp ?? 0}
               temp_max={d?.main.temp_max ?? 0}
